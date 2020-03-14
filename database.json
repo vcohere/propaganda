@@ -1,0 +1,26 @@
+{
+	"users": {
+		"James": {
+			"name": "James",
+			"profilePicture": "url",
+			"bio": "Hello, I'm James."
+		},
+		"Tom": {
+			"name": "Tom",
+			"profilePicture": "url",
+			"bio": "Hello, I don't like James."
+		}
+	},
+	"messages": {
+		"everyone": {
+			"from": "James",
+			"content": "Hello everyone !",
+			"timestamp": 1
+		},
+		"Tom": {
+			"from": "James",
+			"content": "Hello Tom !",
+			"timestamp": 2
+		}
+	}
+}
