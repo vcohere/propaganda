@@ -3,7 +3,7 @@
 ## TODO
 - [x] Profile page (Bottom menu and clicking on name on top of chat)
 - [x] Profile pictures
-- [ ] Order conversations on home page
+- [x] Order conversations on home page
 - [ ] Search bars
 - [ ] Group chat
 - [ ] Vote page

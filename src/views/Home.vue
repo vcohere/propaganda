@@ -99,6 +99,7 @@ export default {
 		// TODO Clean and optimize
 
 		this.conversationsDb
+			.orderBy('lastUpdated', 'desc')
 			.get()
 			.then((snap) => {
 				this.conversations = []

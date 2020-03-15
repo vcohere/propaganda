@@ -202,6 +202,10 @@ export default {
 					to: this.otherId,
 					timestamp: firebase.firestore.FieldValue.serverTimestamp()
 				})
+
+			this.convRef
+				.update({lastUpdated: firebase.firestore.FieldValue.serverTimestamp()})
+
 			this.messageInput = ''
 		},
 		goToProfile() {
