@@ -8,7 +8,6 @@
 			height: 90px;
 			padding: 20px;
 			background-color: #fff;
-			box-shadow: 0 3px 6px rgba(0,0,0,0.04), 0 3px 6px rgba(0,0,0,0.08);
 
 			* {
 				vertical-align: middle;
@@ -146,8 +145,9 @@
 		#header
 			.previous(@click="$router.go(-1)")
 				i.fas.fa-chevron-left
-			img(src="https://i.pravatar.cc/300" class="profile-picture")
-			.name {{ otherUser ? otherUser.name : '' }}
+			span(@click="goToProfile")
+				img(src="https://i.pravatar.cc/300" class="profile-picture")
+				.name {{ otherUser ? otherUser.name : '' }}
 
 		#messages
 			.message(v-for="message in messages" :class="{mine: message.from === ownId}")
@@ -199,6 +199,14 @@ export default {
 					timestamp: firebase.firestore.FieldValue.serverTimestamp()
 				})
 			this.messageInput = ''
+		},
+		goToProfile() {
+			this.$router.push({
+				name: 'Profile',
+				query: {
+					id: this.otherId
+				}
+			})
 		}
 	},
 	created() {

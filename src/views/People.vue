@@ -50,35 +50,12 @@
 					font-weight: bold;
 					font-size: 1.2rem;
 				}
-			}
-		}
 
-		#footer {
-			position: fixed;
-			bottom: 0;
-			left: 0;
-			width: 100%;
-			text-align: center;
-			background-color: #ffffff;
-			border-top: 1px solid rgba(0,0,0,0.1);
-
-			.nav {
-				display: inline-block;
-				width: 24.5%;
-				font-size: 25px;
-				padding: 10px 0;
-
-				&.active {
-					color: #1B9CFC;
-				}
-
-				* {
-					vertical-align: middle;
-				}
-
-				.profile-picture {
-					width: 40px;
-					border-radius: 50%;
+				.message {
+					position: absolute;
+					top: 25px;
+					right: 0;
+					font-size: 40px;
 				}
 			}
 		}
@@ -90,20 +67,11 @@
 		input(type="text" placeholder="Search..." id="search")
 
 		#list
-			.item(v-for="user in users" @click="startChat(user.id)")
+			.item(v-for="user in users" @click="goToProfile(user.id)")
 				img(src="https://i.pravatar.cc/300" class="profile-picture")
 				.name {{ user.name }}
 				.preview {{ user.bio }}
-
-		#footer
-			.nav(@click="goToHome")
-				i.fas.fa-comment-dots
-			.nav
-				i.fas.fa-list-ol
-			.nav.active
-				i.fas.fa-users
-			.nav(@click="logout")
-				img(src="https://i.pravatar.cc/299" class="profile-picture")
+				i.far.fa-comments.message(@click.stop="startChat(user.id)")
 </template>
 
 <script>
@@ -134,8 +102,13 @@ export default {
 				}
 			})
 		},
-		goToHome() {
-			this.$router.push('home')
+		goToProfile(userId) {
+			this.$router.push({
+				name: 'Profile',
+				query: {
+					id: userId
+				}
+			})
 		}
 	},
 	mounted() {

@@ -6,6 +6,7 @@ import Chat from '../views/Chat.vue'
 import Login from '../views/Login.vue'
 import SignUp from '../views/SignUp.vue'
 import People from '../views/People.vue'
+import Profile from '../views/Profile.vue'
 
 Vue.use(Router)
 
@@ -60,7 +61,15 @@ const router = new Router ({
 			meta: {
 				requiresAuth: true
 			}
-		}
+		},
+		{
+			path: '/profile',
+			name: 'Profile',
+			component: Profile,
+			meta: {
+				requiresAuth: true
+			}
+		},
 	]
 })
 

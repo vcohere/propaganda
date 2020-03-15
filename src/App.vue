@@ -53,18 +53,13 @@
 				i.fas.fa-list-ol
 			.nav(@click="goToPeople" :class="{active: $route.name === 'People'}")
 				i.fas.fa-users
-			.nav(@click="logout")
+			.nav(@click="goToProfile")
 				img(src="https://i.pravatar.cc/299" class="profile-picture")
 </template>
 
 <script>
-	import firebase from 'firebase'
-
 	export default {
 		name: 'app',
-		created() {
-			console.log(this.$route)
-		},
 		methods: {
 			goToHome() {
 				this.$router.push('home')
@@ -72,10 +67,8 @@
 			goToPeople() {
 				this.$router.push('people')
 			},
-			logout() {
-				firebase.auth().signOut().then(() => {
-					this.$router.replace('login')
-				})
+			goToProfile() {
+				this.$router.push('profile')
 			}
 		}
 	}
