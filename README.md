@@ -1,4 +1,4 @@
-# reality
+# Propaganda
 
 ## TODO
 * Profile page (Bottom menu and clicking on name on top of chat)
