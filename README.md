@@ -4,7 +4,7 @@
 - [x] Profile page (Bottom menu and clicking on name on top of chat)
 - [x] Profile pictures
 - [x] Order conversations on home page
-- [ ] Search bars
+- [x] Search bars
 - [ ] Group chat
 - [ ] Vote page
 - [ ] Push notifications

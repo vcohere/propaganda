@@ -64,10 +64,10 @@
 
 <template lang="pug">
 	#people
-		input(type="text" placeholder="Search..." id="search")
+		input(type="text" placeholder="Search..." id="search" v-model="searchInput" @input="searching")
 
 		#list
-			.item(v-for="user in users" @click="goToProfile(user.id)")
+			.item(v-for="user in users" v-if="!user.hide" @click="goToProfile(user.id)")
 				img(:src="user.profilePicture" class="profile-picture")
 				.name {{ user.name }}
 				.preview {{ user.bio }}
@@ -82,7 +82,8 @@ export default {
 	data() {
 		return {
 			uid: firebase.auth().currentUser.uid,
-			users: null
+			users: null,
+			searchInput: ''
 		}
 	},
 	methods: {
@@ -100,6 +101,18 @@ export default {
 					convId: convId,
 					otherId: userId
 				}
+			})
+		},
+		searching() {
+			let tempSearch = this.searchInput.toLowerCase()
+
+			this.users.forEach(user => {
+				let tempName = user.name.toLowerCase()
+
+				if (tempName.search(tempSearch) === -1)
+					user.hide = true
+				if (tempSearch == '')
+					user.hide = false
 			})
 		},
 		goToProfile(userId) {

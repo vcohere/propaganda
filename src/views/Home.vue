@@ -57,10 +57,10 @@
 
 <template lang="pug">
 	#home
-		input(type="text" placeholder="Search..." id="search")
+		input(type="text" placeholder="Search..." id="search" v-model="searchInput" @input="searching")
 
 		#list
-				.item(v-for="conversation in conversations" @click="startChat(conversation.user.id)")
+				.item(v-for="conversation in conversations" v-if="!conversation.hide" @click="startChat(conversation.user.id)")
 					img(:src="conversation.user.profilePicture" class="profile-picture")
 					.name {{ conversation.user.name }}
 					.preview {{ conversation.preview }}
@@ -76,7 +76,8 @@ export default {
 			uid: firebase.auth().currentUser.uid,
 			usersDb: firebase.firestore().collection('users'),
 			conversationsDb: firebase.firestore().collection('conversations'),
-			conversations: null
+			conversations: null,
+			searchInput: ''
 		}
 	},
 	methods: {
@@ -92,6 +93,18 @@ export default {
 					convId: convId,
 					otherId: userId
 				}
+			})
+		},
+		searching() {
+			let tempSearch = this.searchInput.toLowerCase()
+
+			this.conversations.forEach(conversation => {
+				let tempName = conversation.user.name.toLowerCase()
+
+				if (tempName.search(tempSearch) === -1)
+					conversation.hide = true
+				if (tempSearch == '')
+					conversation.hide = false
 			})
 		}
 	},
