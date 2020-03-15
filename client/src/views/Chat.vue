@@ -15,6 +15,7 @@
 			}
 
 			.previous {
+				display: inline-block;
 				font-size: 30px;
 				color: black;
 				margin-right: 20px;
@@ -143,35 +144,87 @@
 <template lang="pug">
 	#chat
 		#header
-			router-link(to="/").previous
+			.previous(@click="$router.go(-1)")
 				i.fas.fa-chevron-left
 			img(src="https://i.pravatar.cc/300" class="profile-picture")
-			.name
-				| Pickle Rick
+			.name {{ otherUser ? otherUser.name : '' }}
 
 		#messages
-			.message
-				img(src="https://i.pravatar.cc/300" class="profile-picture")
+			.message(v-for="message in messages" :class="{mine: message.from === ownId}")
+				img(v-if="message.from !== ownId" src="https://i.pravatar.cc/300" class="profile-picture")
 				.texts
-					.text Yo
-					.text What's happening ?
-
-			.message.mine
-				.texts
-					.text What's up
-					.text Hello
-					.text
-						| Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-				img(src="https://i.pravatar.cc/300" class="profile-picture")
+					.text {{ message.content }}
+				img(v-if="message.from === ownId" src="https://i.pravatar.cc/300" class="profile-picture")
 
 		#input
 			.input-wrap
-				i.fas.fa-paper-plane.send
-				input(type="text" class="message-input" placeholder="Aa")
+				i.fas.fa-paper-plane.send(@click="sendMessage")
+				input(type="text" class="message-input" placeholder="Aa" v-model="messageInput")
 </template>
 
 <script>
+import firebase from 'firebase'
+
 export default {
-  name: 'Home'
+  name: 'Home',
+	data() {
+		return {
+			ownId: firebase.auth().currentUser.uid,
+			otherId: this.$route.query.otherId,
+			otherUser: null,
+			convId: this.$route.query.convId,
+			messages: [],
+			messageInput: ''
+		}
+	},
+	computed: {
+		convDb() {
+			return firebase.firestore().collection('conversations')
+		},
+		convRef() {
+			return this.convDb.doc(this.convId)
+		},
+		usersDb() {
+			return firebase.firestore().collection('users').doc(this.otherId)
+		}
+	},
+	methods: {
+		sendMessage() {
+			this.convRef
+				.collection('messages')
+				.add({
+					from: this.ownId,
+					content: this.messageInput,
+					to: this.otherId,
+					timestamp: firebase.firestore.FieldValue.serverTimestamp()
+				})
+			this.messageInput = ''
+		}
+	},
+	created() {
+		this.convRef
+			.get()
+			.then(res => {
+				if (!res.exists)
+					this.convRef.set({ids: [this.ownId, this.otherId]})
+			})
+
+		this.convRef
+			.collection('messages')
+			.orderBy('timestamp')
+			.onSnapshot(snap => {
+				this.messages = []
+
+				snap.forEach(doc => {
+					this.messages.push(doc.data())
+				})
+			})
+
+		this.usersDb
+			.get()
+			.then(res => {
+				this.otherUser = res.data()
+			})
+	}
 }
 </script>

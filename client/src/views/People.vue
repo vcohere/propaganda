@@ -1,5 +1,5 @@
 <style lang="scss">
-	#home {
+	#people {
 		padding: 20px;
 
 		a {
@@ -52,36 +52,76 @@
 				}
 			}
 		}
+
+		#footer {
+			position: fixed;
+			bottom: 0;
+			left: 0;
+			width: 100%;
+			text-align: center;
+			background-color: #ffffff;
+			border-top: 1px solid rgba(0,0,0,0.1);
+
+			.nav {
+				display: inline-block;
+				width: 24.5%;
+				font-size: 25px;
+				padding: 10px 0;
+
+				&.active {
+					color: #1B9CFC;
+				}
+
+				* {
+					vertical-align: middle;
+				}
+
+				.profile-picture {
+					width: 40px;
+					border-radius: 50%;
+				}
+			}
+		}
 	}
 </style>
 
 <template lang="pug">
-	#home
+	#people
 		input(type="text" placeholder="Search..." id="search")
 
 		#list
-				.item(v-for="conversation in conversations" @click="startChat(conversation.user.id)")
-					img(src="https://i.pravatar.cc/300" class="profile-picture")
-					.name {{ conversation.user.name }}
-					.preview {{ conversation.preview }}
+			.item(v-for="user in users" @click="startChat(user.id)")
+				img(src="https://i.pravatar.cc/300" class="profile-picture")
+				.name {{ user.name }}
+				.preview {{ user.bio }}
+
+		#footer
+			.nav(@click="goToHome")
+				i.fas.fa-comment-dots
+			.nav
+				i.fas.fa-list-ol
+			.nav.active
+				i.fas.fa-users
+			.nav(@click="logout")
+				img(src="https://i.pravatar.cc/299" class="profile-picture")
 </template>
 
 <script>
 import firebase from 'firebase'
 
 export default {
-  name: 'Home',
+  name: 'People',
 	data() {
 		return {
 			uid: firebase.auth().currentUser.uid,
-			usersDb: firebase.firestore().collection('users'),
-			conversationsDb: firebase.firestore().collection('conversations'),
-			conversations: null
+			users: null
 		}
 	},
 	methods: {
-		goToPeople() {
-			this.$router.push('people')
+		logout() {
+			firebase.auth().signOut().then(() => {
+				this.$router.replace('login')
+			})
 		},
 		startChat(userId) {
 			let convId = this.uid > userId ? this.uid + '' + userId : userId + '' + this.uid
@@ -93,44 +133,25 @@ export default {
 					otherId: userId
 				}
 			})
+		},
+		goToHome() {
+			this.$router.push('home')
 		}
 	},
-	async created() {
-		// TODO Clean and optimize
-
-		this.conversationsDb
-			.get()
-			.then((snap) => {
-				this.conversations = []
+	mounted() {
+		firebase
+			.firestore()
+			.collection('users')
+			.onSnapshot((snap) => {
+				this.users = []
 
 				snap.forEach((doc) => {
 					let data = doc.data()
 
-					if (data.ids.includes(this.uid)) {
-						let id = data.ids.find(e => e !== this.uid)
+					data.id = doc.id
 
-						this.conversationsDb
-							.doc(doc.id)
-							.collection('messages')
-							.orderBy('timestamp')
-							.limit(1)
-							.get()
-							.then(res => {
-								data.preview = res.docs[0].data().content
-
-								this.usersDb
-									.doc(id)
-									.get()
-									.then(user => {
-										data.user = {
-											name: user.data().name,
-											id: id
-										}
-
-										this.conversations.push(data)
-									})
-							})
-					}
+					if (data.id !== this.uid)
+						this.users.push(data)
 				})
 			})
 	}
