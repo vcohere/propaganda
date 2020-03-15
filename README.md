@@ -2,7 +2,7 @@
 
 ## TODO
 - [x] Profile page (Bottom menu and clicking on name on top of chat)
-- [ ] Profile pictures
+- [x] Profile pictures
 - [ ] Group chat
 - [ ] Vote page
 - [ ] Push notifications
