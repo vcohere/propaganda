@@ -112,7 +112,7 @@ export default {
 						this.conversationsDb
 							.doc(doc.id)
 							.collection('messages')
-							.orderBy('timestamp')
+							.orderBy('timestamp', 'desc')
 							.limit(1)
 							.get()
 							.then(res => {
