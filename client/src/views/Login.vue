@@ -26,7 +26,7 @@
 			border: none;
 		}
 
-		h3 {
+		h3, .create-account {
 			margin-bottom: 20px;
 		}
 
@@ -44,6 +44,7 @@
 		p.error(v-if="errorMessage") {{ errorMessage }}
 		input(type="text" placeholder="mail" v-model="email")
 		input(type="password" placeholder="password" v-model="password")
+		router-link(to='signup').create-account Create an account
 		button(@click="login") Connexion
 </template>
 

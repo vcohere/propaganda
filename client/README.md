@@ -1,11 +1,11 @@
 # reality
 
 ## TODO
-* Optimize DB queries in Home.vue
 * Profile page (Bottom menu and clicking on name on top of chat)
 * Group chat
 * Vote page
 * Push notifications
+* Optimize DB queries in Home.vue
 
 ## Project setup
 ```
