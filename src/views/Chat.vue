@@ -146,15 +146,15 @@
 			.previous(@click="$router.go(-1)")
 				i.fas.fa-chevron-left
 			span(@click="goToProfile")
-				img(src="https://i.pravatar.cc/300" class="profile-picture")
+				img(:src="otherUser ? otherUser.profilePicture : ''" class="profile-picture")
 				.name {{ otherUser ? otherUser.name : '' }}
 
 		#messages
 			.message(v-for="message in messages" :class="{mine: message.from === ownId}")
-				img(v-if="message.from !== ownId" src="https://i.pravatar.cc/300" class="profile-picture")
+				img(v-if="message.from !== ownId" :src="otherUser ? otherUser.profilePicture : ''" class="profile-picture")
 				.texts
 					.text {{ message.content }}
-				img(v-if="message.from === ownId" src="https://i.pravatar.cc/300" class="profile-picture")
+				img(v-if="message.from === ownId" :src="ownUser ? ownUser.profilePicture : ''" class="profile-picture")
 
 		#input
 			.input-wrap
@@ -170,6 +170,7 @@ export default {
 	data() {
 		return {
 			ownId: firebase.auth().currentUser.uid,
+			ownUser: null,
 			otherId: this.$route.query.otherId,
 			otherUser: null,
 			convId: this.$route.query.convId,
@@ -184,8 +185,11 @@ export default {
 		convRef() {
 			return this.convDb.doc(this.convId)
 		},
-		usersDb() {
+		otherUserDb() {
 			return firebase.firestore().collection('users').doc(this.otherId)
+		},
+		ownUserDb() {
+			return firebase.firestore().collection('users').doc(this.ownId)
 		}
 	},
 	methods: {
@@ -228,10 +232,16 @@ export default {
 				})
 			})
 
-		this.usersDb
+		this.otherUserDb
 			.get()
 			.then(res => {
 				this.otherUser = res.data()
+			})
+
+		this.ownUserDb
+			.get()
+			.then(res => {
+				this.ownUser = res.data()
 			})
 	}
 }

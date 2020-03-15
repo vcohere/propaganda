@@ -68,7 +68,7 @@
 				i.fas.fa-chevron-left
 		#content
 			.profile-picture
-				img(src="https://i.pravatar.cc/500")
+				img(:src="userInfos ? userInfos.profilePicture : ''")
 			h1 {{ userInfos ? userInfos.name : '' }}
 			p {{ userInfos ? userInfos.bio : '' }}
 

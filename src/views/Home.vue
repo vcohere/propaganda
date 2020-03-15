@@ -61,7 +61,7 @@
 
 		#list
 				.item(v-for="conversation in conversations" @click="startChat(conversation.user.id)")
-					img(src="https://i.pravatar.cc/300" class="profile-picture")
+					img(:src="conversation.user.profilePicture" class="profile-picture")
 					.name {{ conversation.user.name }}
 					.preview {{ conversation.preview }}
 </template>
@@ -122,8 +122,11 @@ export default {
 									.doc(id)
 									.get()
 									.then(user => {
+										let userData = user.data()
+
 										data.user = {
-											name: user.data().name,
+											name: userData.name,
+											profilePicture: userData.profilePicture,
 											id: id
 										}
 

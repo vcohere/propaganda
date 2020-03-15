@@ -24,7 +24,7 @@
 	.nav {
 		display: inline-block;
 		width: 24.5%;
-		font-size: 25px;
+		font-size: 35px;
 		padding: 10px 0;
 
 		&.active {
@@ -54,12 +54,20 @@
 			.nav(@click="goToPeople" :class="{active: $route.name === 'People'}")
 				i.fas.fa-users
 			.nav(@click="goToProfile")
-				img(src="https://i.pravatar.cc/299" class="profile-picture")
+				img(:src="user ? user.profilePicture : ''" class="profile-picture")
 </template>
 
 <script>
+	import firebase from 'firebase'
+
 	export default {
 		name: 'app',
+		data() {
+			return {
+				uid: firebase.auth().currentUser.uid,
+				user: null
+			}
+		},
 		methods: {
 			goToHome() {
 				this.$router.push('home')
@@ -70,6 +78,16 @@
 			goToProfile() {
 				this.$router.push('profile')
 			}
+		},
+		created() {
+			firebase
+				.firestore()
+				.collection('users')
+				.doc(this.uid)
+				.get()
+				.then(res => {
+					this.user = res.data()
+				})
 		}
 	}
 </script>

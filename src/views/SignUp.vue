@@ -84,7 +84,7 @@ export default {
 				})
 				.then(
 					() => {
-						this.$router.replace('home')
+						this.$router.replace('picture')
 					},
 					(err) => {
 						this.errorMessage = 'Error. ' + err.message

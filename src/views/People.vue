@@ -68,7 +68,7 @@
 
 		#list
 			.item(v-for="user in users" @click="goToProfile(user.id)")
-				img(src="https://i.pravatar.cc/300" class="profile-picture")
+				img(:src="user.profilePicture" class="profile-picture")
 				.name {{ user.name }}
 				.preview {{ user.bio }}
 				i.far.fa-comments.message(@click.stop="startChat(user.id)")

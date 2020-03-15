@@ -5,6 +5,7 @@ import Home from '../views/Home.vue'
 import Chat from '../views/Chat.vue'
 import Login from '../views/Login.vue'
 import SignUp from '../views/SignUp.vue'
+import Picture from '../views/Picture.vue'
 import People from '../views/People.vue'
 import Profile from '../views/Profile.vue'
 
@@ -35,6 +36,15 @@ const router = new Router ({
 			component: SignUp,
 			meta: {
 				hideMenu: true
+			}
+		},
+		{
+			path: '/picture',
+			name: 'Picture',
+			component: Picture,
+			meta: {
+				hideMenu: true,
+				requiresAuth: true
 			}
 		},
 		{
@@ -69,7 +79,7 @@ const router = new Router ({
 			meta: {
 				requiresAuth: true
 			}
-		},
+		}
 	]
 })
 
