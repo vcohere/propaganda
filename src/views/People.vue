@@ -1,6 +1,7 @@
 <style lang="scss">
 	#people {
 		padding: 20px;
+		padding-bottom: 90px;
 
 		a {
 			color: black;

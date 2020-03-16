@@ -1,6 +1,7 @@
 <style lang="scss">
 	#profile {
 		padding: 20px;
+		padding-bottom: 90px;
 		text-align: center;
 
 		#header {

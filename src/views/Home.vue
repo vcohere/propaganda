@@ -1,6 +1,7 @@
 <style lang="scss">
 	#home {
 		padding: 20px;
+		padding-bottom: 90px;
 
 		a {
 			color: black;
@@ -20,7 +21,6 @@
 
 		#list {
 			padding-top: 20px;
-			padding-bottom: 50px;
 
 			.item {
 				position: relative;

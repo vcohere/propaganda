@@ -49,7 +49,7 @@
 		#footer(v-if="!$route.meta.hideMenu")
 			.nav(@click="goToHome" :class="{active: $route.name === 'Home'}")
 				i.fas.fa-comment-dots
-			.nav
+			.nav(@click="goToVote" :class="{active: $route.name === 'Vote'}")
 				i.fas.fa-list-ol
 			.nav(@click="goToPeople" :class="{active: $route.name === 'People'}")
 				i.fas.fa-users
@@ -77,6 +77,9 @@
 			},
 			goToProfile() {
 				this.$router.push('profile')
+			},
+			goToVote() {
+				this.$router.push('vote')
 			}
 		},
 		created() {

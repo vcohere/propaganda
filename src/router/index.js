@@ -8,6 +8,7 @@ import SignUp from '../views/SignUp.vue'
 import Picture from '../views/Picture.vue'
 import People from '../views/People.vue'
 import Profile from '../views/Profile.vue'
+import Vote from '../views/Vote.vue'
 
 Vue.use(Router)
 
@@ -76,6 +77,14 @@ const router = new Router ({
 			path: '/profile',
 			name: 'Profile',
 			component: Profile,
+			meta: {
+				requiresAuth: true
+			}
+		},
+		{
+			path: '/vote',
+			name: 'Vote',
+			component: Vote,
 			meta: {
 				requiresAuth: true
 			}
