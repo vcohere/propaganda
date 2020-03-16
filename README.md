@@ -7,7 +7,7 @@ Features
 - [x] Order conversations on home page
 - [x] Search bars
 - [x] Group chat
-- [ ] Vote page
+- [x] Vote page
 - [ ] Notifications on home page
 - [ ] Push notifications
 
