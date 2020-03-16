@@ -8,9 +8,12 @@ Features
 - [x] Search bars
 - [x] Group chat
 - [ ] Vote page
+- [ ] Notifications on home page
 - [ ] Push notifications
 
 Optimizations
+- [ ] Loader on buttons
+- [ ] Loader on content
 - [ ] Optimize DB queries in Home.vue
 - [ ] Caching pictures, too slow
 - [ ] Fix profile pictures in global chat

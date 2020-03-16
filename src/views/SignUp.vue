@@ -24,6 +24,20 @@
 			color: #fff;
 			border-radius: 5px;
 			border: none;
+
+			.loader {
+				display: none;
+			}
+
+			&.loading {
+				span {
+					display: none;
+				}
+
+				.loader {
+					display: block;
+				}
+			}
 		}
 
 		h3 {
@@ -46,7 +60,9 @@
 		input(type="text" placeholder="Bio" v-model="bio")
 		input(type="text" placeholder="Mail address" v-model="email")
 		input(type="password" placeholder="Password" v-model="password")
-		button(@click="signup") Sign up
+		button(@click="signup" :class="{loading: buttonLoading}")
+			span Sign up
+			i.fas.fa-circle-notch.fa-spin.loader
 </template>
 
 <script>

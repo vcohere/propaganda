@@ -3,6 +3,11 @@
 		padding: 20px;
 		padding-bottom: 160px;
 
+		h3 {
+			text-align: center;
+			margin-bottom: 20px;
+		}
+
 		.user {
 			display: inline-block;
 			width: 50%;
@@ -66,6 +71,11 @@
 			color: #fff;
 			border-radius: 5px;
 			border: none;
+
+			&.inactive {
+				pointer-events: none;
+				background-color: #6c757d;
+			}
 		}
 
 		#modal {
@@ -120,6 +130,7 @@
 
 <template lang="pug">
 	#vote
+		h3(v-if="lockedVote") Your vote is locked in for today.
 		#modal(v-if="activeModal")
 			.modal-inner
 				p You won't be able to change your vote until tomorrow. Are you SURE ?
@@ -134,7 +145,7 @@
 					i.fas.fa-check
 
 			.name {{ user.name }}
-		button(@click="activeModal = true").save Save vote
+		button(@click="activeModal = true" :class="{inactive: lockedVote}").save Save vote
 </template>
 
 <script>
@@ -147,12 +158,15 @@ export default {
 			uid: firebase.auth().currentUser.uid,
 			users: null,
 			selectedUser: null,
+			lockedVote: false,
 			activeModal: false,
 			errorMessage: ''
 		}
 	},
 	methods: {
 		selectUser(id) {
+			if (this.lockedVote)
+				return false
 			let selectedUser = null
 
 			this.users.forEach(user => {
@@ -171,7 +185,23 @@ export default {
 		saveVote() {
 			if (!this.selectedUser) {
 				this.errorMessage = "Please select an user first."
+				return false
 			}
+
+			let todaysTimestamp = new Date
+			todaysTimestamp.setHours(0,0,0,0)
+
+			firebase
+				.firestore()
+				.collection('votes')
+				.add({
+					timestamp: todaysTimestamp,
+					from: this.uid,
+					vote: this.selectedUser
+				})
+
+			this.lockedVote = true
+			this.activeModal = false
 		}
 	},
 	created() {
@@ -190,6 +220,22 @@ export default {
 					if (data.id !== this.uid)
 						this.users.push(data)
 				})
+			})
+
+		let todaysTimestamp = new Date
+		todaysTimestamp.setHours(0,0,0,0)
+
+		firebase
+			.firestore()
+			.collection('votes')
+			.where('timestamp', '==', todaysTimestamp)
+			.where('from', '==', this.uid)
+			.get()
+			.then(res => {
+				if (!res.empty) {
+					this.selectUser(res.docs[0].data().vote)
+					this.lockedVote = true
+				}
 			})
 	}
 }

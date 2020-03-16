@@ -24,6 +24,20 @@
 			color: #fff;
 			border-radius: 5px;
 			border: none;
+
+			.loader {
+				display: none;
+			}
+
+			&.loading {
+				span {
+					display: none;
+				}
+
+				.loader {
+					display: block;
+				}
+			}
 		}
 
 		h3, .create-account {
@@ -45,7 +59,9 @@
 		input(type="text" placeholder="mail" v-model="email")
 		input(type="password" placeholder="password" v-model="password")
 		router-link(to='signup').create-account Create an account
-		button(@click="login") Connexion
+		button(@click="login" :class="{loading: buttonLoading}")
+			span Connexion
+			i.fas.fa-circle-notch.fa-spin.loader
 </template>
 
 <script>
@@ -58,16 +74,21 @@ export default {
 			email: '',
 			password: '',
 			errorMessage: '',
-			successMessage: ''
+			successMessage: '',
+			buttonLoading: false
 		}
 	},
 	methods: {
 		login() {
+			this.buttonLoading = true
+
 			firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(
 				() => {
+					this.buttonLoading = false
 					this.$router.replace('home')
 				},
 				(err) => {
+					this.buttonLoading = false
 					this.errorMessage = err.message
 				}
 			)

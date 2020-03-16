@@ -5,6 +5,10 @@
 	box-sizing: border-box;
 }
 
+button:focus, button:active {
+	outline: none;
+}
+
 #app {
 	font-size: 16px;
   font-family: Avenir, Helvetica, Arial, sans-serif;
