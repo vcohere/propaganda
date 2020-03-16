@@ -60,6 +60,9 @@
 		input(type="text" placeholder="Search..." id="search" v-model="searchInput" @input="searching")
 
 		#list
+				.item(@click="startGlobalChat")
+					img(class="profile-picture" src="https://firebasestorage.googleapis.com/v0/b/propaganda-967a8.appspot.com/o/images%2Fglobal.png?alt=media&token=150f3d9c-96c9-435d-9330-24e7e03f0807")
+					.name Global chat
 				.item(v-for="conversation in conversations" v-if="!conversation.hide" @click="startChat(conversation.user.id)")
 					img(:src="conversation.user.profilePicture" class="profile-picture")
 					.name {{ conversation.user.name }}
@@ -83,6 +86,15 @@ export default {
 	methods: {
 		goToPeople() {
 			this.$router.push('people')
+		},
+		startGlobalChat() {
+				this.$router.push({
+					name: 'Chat',
+					query: {
+						convId: '*',
+						otherId: '*'
+					}
+				})
 		},
 		startChat(userId) {
 			let convId = this.uid > userId ? this.uid + '' + userId : userId + '' + this.uid
@@ -118,6 +130,8 @@ export default {
 				this.conversations = []
 
 				snap.forEach((doc) => {
+					if (doc.id === '*') return
+
 					let data = doc.data()
 
 					if (data.ids.includes(this.uid)) {

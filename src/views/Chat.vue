@@ -146,8 +146,8 @@
 			.previous(@click="$router.go(-1)")
 				i.fas.fa-chevron-left
 			span(@click="goToProfile")
-				img(:src="otherUser ? otherUser.profilePicture : ''" class="profile-picture")
-				.name {{ otherUser ? otherUser.name : '' }}
+				img(:src="otherUser ? otherUser.profilePicture : 'https://firebasestorage.googleapis.com/v0/b/propaganda-967a8.appspot.com/o/images%2Fglobal.png?alt=media&token=150f3d9c-96c9-435d-9330-24e7e03f0807'" class="profile-picture")
+				.name {{ otherUser ? otherUser.name : 'Global chat' }}
 
 		#messages
 			.message(v-for="message in messages" :class="{mine: message.from === ownId}")
