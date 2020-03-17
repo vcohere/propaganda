@@ -11,6 +11,7 @@ Features
 - [x] Notifications on home page
 - [ ] Notifications for global chat
 - [ ] Push notifications
+- [ ] Align vertically text next to profile pictures in user lists (ex: Home.vue)
 
 Optimizations
 - [ ] Loader on buttons
