@@ -85,7 +85,7 @@ export default {
 	data() {
 		return {
 			myUid: this.$store.state.self.uid,
-			uid: this.$route.query.id ? this.$route.query.id : firebase.auth().currentUser.uid,
+			uid: this.$route.query.id ? this.$route.query.id : this.$store.state.self.uid,
 			isMine: this.$route.query.id ? false : true,
 			userInfos: null
 		}
@@ -109,14 +109,7 @@ export default {
 		}
 	},
 	created() {
-		firebase
-			.firestore()
-			.collection('users')
-			.doc(this.uid)
-			.get()
-			.then(res => {
-				this.userInfos = res.data()
-			})
+		this.userInfos = this.$store.state.users.find(user => user.id === this.uid)
 	}
 }
 </script>

@@ -25,6 +25,10 @@
 				transform-style: preserve-3d;
 				transform: scale(1);
 
+				&.noanimation {
+					transition: none;
+				}
+
 				&.active {
 					transform: rotateY(180deg);
 				}
@@ -137,40 +141,45 @@
 				p.red {{ errorMessage }}
 				button(@click="closeModal()").cancel Cancel
 				button(@click="saveVote").confirm Save
-		.user(v-for="user in users" @click="selectUser(user.id)")
-			.user-tile(:class="{active: user.active}")
+		.user(v-for="user in users" v-if="user.id !== uid" @click="selectUser(user.id)")
+			.user-tile(:class="{active: user.active, noanimation: lockedVote}")
 				.tile.front
 					img(:src="user.profilePicture")
 				.tile.back
 					i.fas.fa-check
 
 			.name {{ user.name }}
-		button(@click="activeModal = true" :class="{inactive: lockedVote}").save Save vote
+		button(@click="activeModal = true" :class="{inactive: lockedVote || isLoading}").save Save vote
 </template>
 
 <script>
 import firebase from 'firebase'
 
 export default {
+	// TODO Problem when going back to another tab and back to Vote
   name: 'vote',
 	data() {
 		return {
-			uid: firebase.auth().currentUser.uid,
-			users: null,
+			uid: this.$store.state.self.uid,
+			users: this.$store.state.users,
 			selectedUser: null,
 			lockedVote: false,
 			activeModal: false,
-			errorMessage: ''
+			errorMessage: '',
+			isLoading: true
 		}
 	},
 	methods: {
-		selectUser(id) {
+		selectUser(id, force) {
 			if (this.lockedVote)
 				return false
 			let selectedUser = null
 
 			this.users.forEach(user => {
-				user.active = user.id === id ? !user.active : false
+				if (user.id === id)
+					user.active = force ? true : !user.active
+				else
+					user.active = false
 
 				if (user.active)
 					selectedUser = user.id
@@ -204,39 +213,18 @@ export default {
 			this.activeModal = false
 		}
 	},
-	created() {
-		firebase
-			.firestore()
-			.collection('users')
-			.onSnapshot((snap) => {
-				this.users = []
-
-				snap.forEach((doc) => {
-					let data = doc.data()
-
-					data.id = doc.id
-					data.active = false
-
-					if (data.id !== this.uid)
-						this.users.push(data)
-				})
-			})
-
-		let todaysTimestamp = new Date
+	async created() {
+		let todaysTimestamp = new Date,
+				votesDb = firebase.firestore().collection('votes')
 		todaysTimestamp.setHours(0,0,0,0)
 
-		firebase
-			.firestore()
-			.collection('votes')
-			.where('timestamp', '==', todaysTimestamp)
-			.where('from', '==', this.uid)
-			.get()
-			.then(res => {
-				if (!res.empty) {
-					this.selectUser(res.docs[0].data().vote)
-					this.lockedVote = true
-				}
-			})
+		let userVote = await votesDb.where('timestamp', '==', todaysTimestamp).where('from', '==', this.uid).get()
+
+		if (!userVote.empty) {
+			this.lockedVote = true
+			this.selectUser(userVote.docs[0].data().vote, true)
+			this.isLoading = false
+		}
 	}
 }
 </script>

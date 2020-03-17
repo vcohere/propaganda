@@ -17,10 +17,10 @@ Optimizations
 - [x] Loader on buttons
 - [x] Loader on content
 - [x] Optimize DB queries in Home.vue
-- [ ] Caching pictures, too slow
+- [x] Caching pictures, too slow
 - [ ] Fix profile pictures in global chat
 - [ ] Better and faster loader animation in App.vue
-- [ ] Redo pages with users data stored in store cache
+- [x] Redo pages with users data stored in store cache
 
 ## Project setup
 ```
