@@ -169,8 +169,8 @@ export default {
   name: 'Home',
 	data() {
 		return {
-			ownId: firebase.auth().currentUser.uid,
-			ownUser: null,
+			ownId: this.$store.state.self.uid,
+			ownUser: this.$store.state.self,
 			otherId: this.$route.query.otherId,
 			otherUser: null,
 			convId: this.$route.query.convId,
@@ -187,9 +187,6 @@ export default {
 		},
 		otherUserDb() {
 			return firebase.firestore().collection('users').doc(this.otherId)
-		},
-		ownUserDb() {
-			return firebase.firestore().collection('users').doc(this.ownId)
 		}
 	},
 	methods: {
@@ -248,12 +245,6 @@ export default {
 			.get()
 			.then(res => {
 				this.otherUser = res.data()
-			})
-
-		this.ownUserDb
-			.get()
-			.then(res => {
-				this.ownUser = res.data()
 			})
 
 		firebase

@@ -99,7 +99,7 @@ export default {
   name: 'Home',
 	data() {
 		return {
-			uid: firebase.auth().currentUser.uid,
+			uid: this.$store.state.self.uid,
 			usersDb: firebase.firestore().collection('users'),
 			conversationsDb: firebase.firestore().collection('conversations'),
 			notificationsDb: firebase.firestore().collection('notifications'),

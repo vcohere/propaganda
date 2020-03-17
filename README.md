@@ -20,6 +20,7 @@ Optimizations
 - [ ] Caching pictures, too slow
 - [ ] Fix profile pictures in global chat
 - [ ] Better and faster loader animation in App.vue
+- [ ] Redo pages with users data stored in store cache
 
 ## Project setup
 ```

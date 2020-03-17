@@ -87,7 +87,7 @@
 		#list(:class="{loading: isLoading}")
 			p.loader
 				i.fas.fa-circle-notch.fa-spin
-			.item(v-for="user in users" v-if="!user.hide" @click="goToProfile(user.id)")
+			.item(v-for="user in users" v-if="!user.hide && user.id !== uid" @click="goToProfile(user.id)")
 				img(:src="user.profilePicture" class="profile-picture")
 				.name {{ user.name }}
 				.preview {{ user.bio }}
@@ -101,10 +101,10 @@ export default {
   name: 'People',
 	data() {
 		return {
-			uid: firebase.auth().currentUser.uid,
-			users: null,
+			uid: this.$store.state.self.uid,
+			users: this.$store.state.users,
 			searchInput: '',
-			isLoading: true
+			isLoading: false
 		}
 	},
 	methods: {
@@ -144,25 +144,6 @@ export default {
 				}
 			})
 		}
-	},
-	mounted() {
-		firebase
-			.firestore()
-			.collection('users')
-			.onSnapshot((snap) => {
-				this.users = []
-
-				snap.forEach((doc) => {
-					let data = doc.data()
-
-					data.id = doc.id
-
-					if (data.id !== this.uid)
-						this.users.push(data)
-				})
-
-				this.isLoading = false
-			})
 	}
 }
 </script>

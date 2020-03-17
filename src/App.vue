@@ -68,8 +68,8 @@ button:focus, button:active {
 		name: 'app',
 		data() {
 			return {
-				uid: firebase.auth().currentUser.uid,
-				user: null
+				uid: this.$store.state.uid,
+				user: this.$store.state.self
 			}
 		},
 		methods: {
@@ -86,15 +86,22 @@ button:focus, button:active {
 				this.$router.push('vote')
 			}
 		},
-		created() {
-			firebase
-				.firestore()
-				.collection('users')
-				.doc(this.uid)
-				.get()
-				.then(res => {
-					this.user = res.data()
-				})
+		async beforeCreate() {
+			this.$store.state.users = []
+
+			let usersDb = firebase.firestore().collection('users')
+			let uid = firebase.auth().currentUser.uid
+
+			let users = await usersDb.get()
+			for (let user of users.docs) {
+				let data = user.data()
+				data.id = user.id
+				this.$store.state.users.push(data)
+			}
+
+			let self = await usersDb.doc(uid).get()
+			this.$store.state.self = self.data()
+			this.$store.state.self.uid = uid
 		}
 	}
 </script>
