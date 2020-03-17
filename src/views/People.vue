@@ -23,6 +23,13 @@
 			padding-top: 20px;
 			padding-bottom: 50px;
 
+			.loader {
+				display: none;
+				text-align: center;
+				font-size: 30px;
+				color: #1B9CFC;
+			}
+
 			.item {
 				position: relative;
 				border-top: 1px solid rgba(0,0,0,0.1);
@@ -59,6 +66,16 @@
 					font-size: 40px;
 				}
 			}
+
+			&.loading {
+				.loader {
+					display: block;
+				}
+
+				.item {
+					opacity: 0;
+				}
+			}
 		}
 	}
 </style>
@@ -67,7 +84,9 @@
 	#people
 		input(type="text" placeholder="Search..." id="search" v-model="searchInput" @input="searching")
 
-		#list
+		#list(:class="{loading: isLoading}")
+			p.loader
+				i.fas.fa-circle-notch.fa-spin
 			.item(v-for="user in users" v-if="!user.hide" @click="goToProfile(user.id)")
 				img(:src="user.profilePicture" class="profile-picture")
 				.name {{ user.name }}
@@ -84,7 +103,8 @@ export default {
 		return {
 			uid: firebase.auth().currentUser.uid,
 			users: null,
-			searchInput: ''
+			searchInput: '',
+			isLoading: true
 		}
 	},
 	methods: {
@@ -140,6 +160,8 @@ export default {
 					if (data.id !== this.uid)
 						this.users.push(data)
 				})
+
+				this.isLoading = false
 			})
 	}
 }

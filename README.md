@@ -14,11 +14,12 @@ Features
 - [ ] Align vertically text next to profile pictures in user lists (ex: Home.vue)
 
 Optimizations
-- [ ] Loader on buttons
-- [ ] Loader on content
+- [x] Loader on buttons
+- [x] Loader on content
 - [x] Optimize DB queries in Home.vue
 - [ ] Caching pictures, too slow
 - [ ] Fix profile pictures in global chat
+- [ ] Better and faster loader animation in App.vue
 
 ## Project setup
 ```

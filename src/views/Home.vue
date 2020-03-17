@@ -22,6 +22,13 @@
 		#list {
 			padding-top: 20px;
 
+			.loader {
+				display: none;
+				text-align: center;
+				font-size: 30px;
+				color: #1B9CFC;
+			}
+
 			.item {
 				position: relative;
 				border-top: 1px solid rgba(0,0,0,0.1);
@@ -55,6 +62,16 @@
 					font-size: 1.2rem;
 				}
 			}
+
+			&.loading {
+				.loader {
+					display: block;
+				}
+
+				.item {
+					opacity: 0;
+				}
+			}
 		}
 	}
 </style>
@@ -63,14 +80,16 @@
 	#home
 		input(type="text" placeholder="Search..." id="search" v-model="searchInput" @input="searching")
 
-		#list
-				.item(@click="startGlobalChat")
-					img(class="profile-picture" src="https://firebasestorage.googleapis.com/v0/b/propaganda-967a8.appspot.com/o/images%2Fglobal.png?alt=media&token=150f3d9c-96c9-435d-9330-24e7e03f0807")
-					.name Global chat
-				.item(v-for="conversation in conversations" v-if="!conversation.hide" @click="startChat(conversation.user.id)")
-					img(:src="conversation.user.profilePicture" class="profile-picture")
-					.name {{ conversation.user.name }}
-					.preview(:class="{active: conversation.notifs > 0}") {{ conversation.preview }}
+		#list(:class="{loading: isLoading}")
+			p.loader
+				i.fas.fa-circle-notch.fa-spin
+			.item(@click="startGlobalChat")
+				img(class="profile-picture" src="https://firebasestorage.googleapis.com/v0/b/propaganda-967a8.appspot.com/o/images%2Fglobal.png?alt=media&token=150f3d9c-96c9-435d-9330-24e7e03f0807")
+				.name Global chat
+			.item(v-for="conversation in conversations" v-if="!conversation.hide" @click="startChat(conversation.user.id)")
+				img(:src="conversation.user.profilePicture" class="profile-picture")
+				.name {{ conversation.user.name }}
+				.preview(:class="{active: conversation.notifs > 0}") {{ conversation.preview }}
 </template>
 
 <script>
@@ -85,7 +104,8 @@ export default {
 			conversationsDb: firebase.firestore().collection('conversations'),
 			notificationsDb: firebase.firestore().collection('notifications'),
 			conversations: [],
-			searchInput: ''
+			searchInput: '',
+			isLoading: true
 		}
 	},
 	methods: {
@@ -125,7 +145,7 @@ export default {
 			})
 		}
 	},
-	async created() {
+	async mounted() {
 		let conversations =	await this.conversationsDb.where('ids', 'array-contains', this.uid).orderBy('lastUpdated', 'desc').get()
 
 		for (let conversation of conversations.docs) {
@@ -153,6 +173,8 @@ export default {
 				...conversation.data()
 			})
 		}
+
+		this.isLoading = false
 	}
 }
 </script>
