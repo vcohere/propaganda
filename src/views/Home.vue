@@ -83,7 +83,8 @@ export default {
 			uid: firebase.auth().currentUser.uid,
 			usersDb: firebase.firestore().collection('users'),
 			conversationsDb: firebase.firestore().collection('conversations'),
-			conversations: null,
+			notificationsDb: firebase.firestore().collection('notifications'),
+			conversations: [],
 			searchInput: ''
 		}
 	},
@@ -125,64 +126,33 @@ export default {
 		}
 	},
 	async created() {
-		// TODO Clean and optimize
+		let conversations =	await this.conversationsDb.where('ids', 'array-contains', this.uid).orderBy('lastUpdated', 'desc').get()
 
-		this.conversationsDb
-			.orderBy('lastUpdated', 'desc')
-			.get()
-			.then((snap) => {
-				this.conversations = []
+		for (let conversation of conversations.docs) {
+			if (conversation.id === '*')
+				continue
 
-				snap.forEach((doc) => {
-					if (doc.id === '*') return
+			let userId = conversation.data().ids.find(e => e !== this.uid)
 
-					let data = doc.data()
-					data.convId = doc.id
+			let lastMessage =	await this.conversationsDb.doc(conversation.id).collection('messages').orderBy('timestamp', 'desc').limit(1).get()
+			let notifs =			await this.notificationsDb.doc(this.uid).get()
+			let userData =		await this.usersDb.doc(userId).get()
 
-					if (data.ids.includes(this.uid)) {
-						let id = data.ids.find(e => e !== this.uid)
+			notifs = notifs.data() ? notifs.data().notifications : []
+			userData = userData.data()
 
-						this.conversationsDb
-							.doc(doc.id)
-							.collection('messages')
-							.orderBy('timestamp', 'desc')
-							.limit(1)
-							.get()
-							.then(res => {
-								data.preview = res.docs[0].data().content
-
-								firebase
-									.firestore()
-									.collection('notifications')
-									.doc(this.uid)
-									.get()
-									.then(notifs => {
-										let notifications = notifs.data()
-
-										if (notifications) {
-											notifications = notifications.notifications
-											data.notifs = notifications.filter(elem => elem === data.convId).length
-										}
-
-										this.usersDb
-											.doc(id)
-											.get()
-											.then(user => {
-												let userData = user.data()
-
-												data.user = {
-													name: userData.name,
-													profilePicture: userData.profilePicture,
-													id: id
-												}
-
-												this.conversations.push(data)
-											})
-									})
-							})
-					}
-				})
+			this.conversations.push({
+				convId: conversation.id,
+				preview: lastMessage.docs[0].data().content,
+				notifs: notifs.filter(elem => elem === conversation.id).length,
+				user: {
+					name: userData.name,
+					profilePicture: userData.profilePicture,
+					id: userId
+				},
+				...conversation.data()
 			})
+		}
 	}
 }
 </script>
