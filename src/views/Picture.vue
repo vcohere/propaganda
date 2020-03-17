@@ -79,7 +79,6 @@ export default {
 					})
 				})
 				.catch(err => {
-					console.log(err)
 					this.errorMessage = err.message
 				})
 		}

@@ -101,7 +101,7 @@ export default {
   name: 'People',
 	data() {
 		return {
-			uid: this.$store.state.self.uid,
+			uid: firebase.auth().currentUser.uid,
 			users: this.$store.state.users,
 			searchInput: '',
 			isLoading: false

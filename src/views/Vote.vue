@@ -160,7 +160,7 @@ export default {
   name: 'vote',
 	data() {
 		return {
-			uid: this.$store.state.self.uid,
+			uid: firebase.auth().currentUser.uid,
 			users: this.$store.state.users,
 			selectedUser: null,
 			lockedVote: false,
@@ -171,7 +171,7 @@ export default {
 	},
 	methods: {
 		selectUser(id, force) {
-			if (this.lockedVote)
+			if (this.lockedVote && !force)
 				return false
 			let selectedUser = null
 

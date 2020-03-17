@@ -68,8 +68,7 @@ button:focus, button:active {
 		name: 'app',
 		data() {
 			return {
-				uid: this.$store.state.uid,
-				user: this.$store.state.self
+				user: null
 			}
 		},
 		methods: {
@@ -87,12 +86,15 @@ button:focus, button:active {
 			}
 		},
 		async beforeCreate() {
+			if (!firebase.auth().currentUser)
+				return
 			this.$store.state.users = []
 
 			let usersDb = firebase.firestore().collection('users')
 			let uid = firebase.auth().currentUser.uid
 
 			let users = await usersDb.get()
+
 			for (let user of users.docs) {
 				let data = user.data()
 				data.id = user.id
@@ -102,6 +104,8 @@ button:focus, button:active {
 			let self = await usersDb.doc(uid).get()
 			this.$store.state.self = self.data()
 			this.$store.state.self.uid = uid
+
+			this.user = this.$store.state.self
 		}
 	}
 </script>

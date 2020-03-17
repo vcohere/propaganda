@@ -169,7 +169,7 @@ export default {
   name: 'Home',
 	data() {
 		return {
-			ownId: this.$store.state.self.uid,
+			ownId: firebase.auth().currentUser.uid,
 			ownUser: this.$store.state.self,
 			otherId: this.$route.query.otherId,
 			otherUser: null,

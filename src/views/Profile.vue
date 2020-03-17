@@ -84,7 +84,7 @@ export default {
   name: 'profile',
 	data() {
 		return {
-			myUid: this.$store.state.self.uid,
+			myUid: firebase.auth().currentUser.uid,
 			uid: this.$route.query.id ? this.$route.query.id : this.$store.state.self.uid,
 			isMine: this.$route.query.id ? false : true,
 			userInfos: null
