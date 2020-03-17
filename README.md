@@ -8,7 +8,8 @@ Features
 - [x] Search bars
 - [x] Group chat
 - [x] Vote page
-- [ ] Notifications on home page
+- [x] Notifications on home page
+- [ ] Notifications for global chat
 - [ ] Push notifications
 
 Optimizations

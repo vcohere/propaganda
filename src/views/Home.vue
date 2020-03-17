@@ -46,6 +46,10 @@
 					padding-left: 75px;
 				}
 
+				.preview.active {
+					font-weight: bold;
+				}
+
 				.name {
 					font-weight: bold;
 					font-size: 1.2rem;
@@ -66,7 +70,7 @@
 				.item(v-for="conversation in conversations" v-if="!conversation.hide" @click="startChat(conversation.user.id)")
 					img(:src="conversation.user.profilePicture" class="profile-picture")
 					.name {{ conversation.user.name }}
-					.preview {{ conversation.preview }}
+					.preview(:class="{active: conversation.notifs > 0}") {{ conversation.preview }}
 </template>
 
 <script>
@@ -133,6 +137,7 @@ export default {
 					if (doc.id === '*') return
 
 					let data = doc.data()
+					data.convId = doc.id
 
 					if (data.ids.includes(this.uid)) {
 						let id = data.ids.find(e => e !== this.uid)
@@ -146,19 +151,33 @@ export default {
 							.then(res => {
 								data.preview = res.docs[0].data().content
 
-								this.usersDb
-									.doc(id)
+								firebase
+									.firestore()
+									.collection('notifications')
+									.doc(this.uid)
 									.get()
-									.then(user => {
-										let userData = user.data()
+									.then(notifs => {
+										let notifications = notifs.data()
 
-										data.user = {
-											name: userData.name,
-											profilePicture: userData.profilePicture,
-											id: id
+										if (notifications) {
+											notifications = notifications.notifications
+											data.notifs = notifications.filter(elem => elem === data.convId).length
 										}
 
-										this.conversations.push(data)
+										this.usersDb
+											.doc(id)
+											.get()
+											.then(user => {
+												let userData = user.data()
+
+												data.user = {
+													name: userData.name,
+													profilePicture: userData.profilePicture,
+													id: id
+												}
+
+												this.conversations.push(data)
+											})
 									})
 							})
 					}

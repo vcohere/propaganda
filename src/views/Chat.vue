@@ -206,6 +206,14 @@ export default {
 			this.convRef
 				.update({lastUpdated: firebase.firestore.FieldValue.serverTimestamp()})
 
+			firebase
+				.firestore()
+				.collection('notifications')
+				.doc(this.otherId)
+				.update({
+					notifications: firebase.firestore.FieldValue.arrayUnion(this.convId)
+				})
+
 			this.messageInput = ''
 		},
 		goToProfile() {
@@ -246,6 +254,14 @@ export default {
 			.get()
 			.then(res => {
 				this.ownUser = res.data()
+			})
+
+		firebase
+			.firestore()
+			.collection('notifications')
+			.doc(this.ownId)
+			.update({
+				notifications: firebase.firestore.FieldValue.arrayRemove(this.convId)
 			})
 	}
 }

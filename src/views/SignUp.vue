@@ -98,9 +98,18 @@ export default {
 					profilePicture: '',
 					bio: this.bio
 				})
-				.then(
-					() => {
-						this.$router.replace('picture')
+				.then(() => {
+						firebase
+							.firestore()
+							.collection('notifications')
+							.doc(data.user.uid)
+							.set({notifications: []})
+							.then(() => {
+								this.$router.replace('picture')
+							},
+							(err) => {
+								this.errorMessage = 'Error. ' + err.message
+							})
 					},
 					(err) => {
 						this.errorMessage = 'Error. ' + err.message
