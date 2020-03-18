@@ -85,7 +85,7 @@ export default {
 	data() {
 		return {
 			myUid: firebase.auth().currentUser.uid,
-			uid: this.$route.query.id ? this.$route.query.id : this.$store.state.self.uid,
+			uid: this.$route.query.id ? this.$route.query.id : firebase.auth().currentUser.uid,
 			isMine: this.$route.query.id ? false : true,
 			userInfos: null
 		}

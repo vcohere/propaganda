@@ -151,10 +151,10 @@
 
 		#messages
 			.message(v-for="message in messages" :class="{mine: message.from === ownId}")
-				img(v-if="message.from !== ownId" :src="otherUser ? otherUser.profilePicture : ''" class="profile-picture")
+				img(v-if="message.from !== ownId" :src="getPicture(message.from)" class="profile-picture")
 				.texts
 					.text {{ message.content }}
-				img(v-if="message.from === ownId" :src="ownUser ? ownUser.profilePicture : ''" class="profile-picture")
+				img(v-if="message.from === ownId" :src="getPicture(message.from)" class="profile-picture")
 
 		#input
 			.input-wrap
@@ -172,21 +172,18 @@ export default {
 			ownId: firebase.auth().currentUser.uid,
 			ownUser: this.$store.state.self,
 			otherId: this.$route.query.otherId,
-			otherUser: null,
 			convId: this.$route.query.convId,
 			messages: [],
 			messageInput: ''
 		}
 	},
 	computed: {
+		otherUser() { return this.$store.state.users.find(user => user.id === this.otherId) },
 		convDb() {
 			return firebase.firestore().collection('conversations')
 		},
 		convRef() {
 			return this.convDb.doc(this.convId)
-		},
-		otherUserDb() {
-			return firebase.firestore().collection('users').doc(this.otherId)
 		}
 	},
 	methods: {
@@ -212,6 +209,9 @@ export default {
 				})
 
 			this.messageInput = ''
+		},
+		getPicture(id) {
+			return this.$store.state.users.find(user => user.id === id).profilePicture
 		},
 		goToProfile() {
 			this.$router.push({
@@ -239,12 +239,6 @@ export default {
 				snap.forEach(doc => {
 					this.messages.push(doc.data())
 				})
-			})
-
-		this.otherUserDb
-			.get()
-			.then(res => {
-				this.otherUser = res.data()
 			})
 
 		firebase

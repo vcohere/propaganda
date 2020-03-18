@@ -143,38 +143,44 @@ export default {
 				if (tempSearch == '')
 					conversation.hide = false
 			})
+		},
+		async getConversations() {
+			this.conversationsDb.where('ids', 'array-contains', this.uid).orderBy('lastUpdated', 'desc').onSnapshot(res => this.getMetadata(res))
+		},
+		async getMetadata(conversations) {
+			let conversationsRes = []
+
+			for (let conversation of conversations.docs) {
+				if (conversation.id === '*')
+					continue
+
+				let userId = conversation.data().ids.find(e => e !== this.uid)
+
+				let lastMessage =	await this.conversationsDb.doc(conversation.id).collection('messages').orderBy('timestamp', 'desc').limit(1).get()
+				let notifs =			await this.notificationsDb.doc(this.uid).get()
+				let userData =		this.$store.state.users.find(user => user.id === userId)
+
+				notifs = notifs.data() ? notifs.data().notifications : []
+
+				conversationsRes.push({
+					convId: conversation.id,
+					preview: lastMessage.docs[0].data().content,
+					notifs: notifs.filter(elem => elem === conversation.id).length,
+					user: {
+						name: userData.name,
+						profilePicture: userData.profilePicture,
+						id: userId
+					},
+					...conversation.data()
+				})
+			}
+
+			this.conversations = conversationsRes
+			this.isLoading = false
 		}
 	},
 	async mounted() {
-		let conversations =	await this.conversationsDb.where('ids', 'array-contains', this.uid).orderBy('lastUpdated', 'desc').get()
-
-		for (let conversation of conversations.docs) {
-			if (conversation.id === '*')
-				continue
-
-			let userId = conversation.data().ids.find(e => e !== this.uid)
-
-			let lastMessage =	await this.conversationsDb.doc(conversation.id).collection('messages').orderBy('timestamp', 'desc').limit(1).get()
-			let notifs =			await this.notificationsDb.doc(this.uid).get()
-			let userData =		await this.usersDb.doc(userId).get()
-
-			notifs = notifs.data() ? notifs.data().notifications : []
-			userData = userData.data()
-
-			this.conversations.push({
-				convId: conversation.id,
-				preview: lastMessage.docs[0].data().content,
-				notifs: notifs.filter(elem => elem === conversation.id).length,
-				user: {
-					name: userData.name,
-					profilePicture: userData.profilePicture,
-					id: userId
-				},
-				...conversation.data()
-			})
-		}
-
-		this.isLoading = false
+		await this.getConversations()
 	}
 }
 </script>

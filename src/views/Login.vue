@@ -84,8 +84,10 @@ export default {
 
 			firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(
 				() => {
-					this.buttonLoading = false
-					this.$router.replace('home')
+					this.$store.dispatch('getUsers').then(() => {
+						this.buttonLoading = false
+						this.$router.replace('home')
+					})
 				},
 				(err) => {
 					this.buttonLoading = false

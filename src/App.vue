@@ -48,7 +48,7 @@ button:focus, button:active {
 </style>
 
 <template lang="pug">
-	#app
+	#app(v-if="!isLoading")
 		router-view
 		#footer(v-if="!$route.meta.hideMenu")
 			.nav(@click="goToHome" :class="{active: $route.name === 'Home'}")
@@ -66,10 +66,9 @@ button:focus, button:active {
 
 	export default {
 		name: 'app',
-		data() {
-			return {
-				user: null
-			}
+		computed: {
+			isLoading() { return this.$store.state.dataLoading },
+			user() { return this.$store.state.self }
 		},
 		methods: {
 			goToHome() {
@@ -85,27 +84,13 @@ button:focus, button:active {
 				this.$router.push('vote')
 			}
 		},
-		async beforeCreate() {
-			if (!firebase.auth().currentUser)
-				return
-			this.$store.state.users = []
-
-			let usersDb = firebase.firestore().collection('users')
-			let uid = firebase.auth().currentUser.uid
-
-			let users = await usersDb.get()
-
-			for (let user of users.docs) {
-				let data = user.data()
-				data.id = user.id
-				this.$store.state.users.push(data)
+		mounted() {
+			if (firebase.auth().currentUser) {
+				this.$store.dispatch('getUsers')
 			}
-
-			let self = await usersDb.doc(uid).get()
-			this.$store.state.self = self.data()
-			this.$store.state.self.uid = uid
-
-			this.user = this.$store.state.self
+			else {
+				this.$store.commit('stopLoading')
+			}
 		}
 	}
 </script>
