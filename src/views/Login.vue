@@ -61,7 +61,7 @@
 		router-link(to='signup').create-account Create an account
 		button(@click="login" :class="{loading: buttonLoading}")
 			span Connexion
-			i.fas.fa-circle-notch.fa-spin.loader
+			i.fas.fa-circle-notch.loader.loader-spin
 </template>
 
 <script>

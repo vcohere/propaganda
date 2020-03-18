@@ -9,17 +9,18 @@ Features
 - [x] Group chat
 - [x] Vote page
 - [x] Notifications on home page
-- [ ] Notifications for global chat
+- [x] Notifications for global chat
 - [ ] Push notifications
 - [x] Align vertically text next to profile pictures in user lists (ex: Home.vue)
+- [ ] Loader in Picture.vue
 
 Optimizations
 - [x] Loader on buttons
 - [x] Loader on content
 - [x] Optimize DB queries in Home.vue
 - [x] Caching pictures, too slow
-- [ ] Fix profile pictures in global chat
-- [ ] Better and faster loader animation in App.vue
+- [x] Fix profile pictures in global chat
+- [x] Better and faster loader animation in App.vue
 - [x] Redo pages with users data stored in store cache
 
 ## Project setup

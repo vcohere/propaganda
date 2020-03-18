@@ -161,7 +161,6 @@ export default {
 	data() {
 		return {
 			uid: firebase.auth().currentUser.uid,
-			users: this.$store.state.users,
 			selectedUser: null,
 			lockedVote: false,
 			activeModal: false,
@@ -169,10 +168,14 @@ export default {
 			isLoading: true
 		}
 	},
+	computed: {
+		users() {return this.$store.state.users}
+	},
 	methods: {
 		selectUser(id, force) {
 			if (this.lockedVote && !force)
 				return false
+
 			let selectedUser = null
 
 			this.users.forEach(user => {
@@ -223,8 +226,9 @@ export default {
 		if (!userVote.empty) {
 			this.lockedVote = true
 			this.selectUser(userVote.docs[0].data().vote, true)
-			this.isLoading = false
 		}
+
+		this.isLoading = false
 	}
 }
 </script>

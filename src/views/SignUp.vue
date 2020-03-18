@@ -62,7 +62,7 @@
 		input(type="password" placeholder="Password" v-model="password")
 		button(@click="signup" :class="{loading: buttonLoading}")
 			span Sign up
-			i.fas.fa-circle-notch.fa-spin.loader
+			i.fas.fa-circle-notch.loader-spin.loader
 </template>
 
 <script>

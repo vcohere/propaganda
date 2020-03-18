@@ -45,6 +45,15 @@ button:focus, button:active {
 		}
 	}
 }
+
+.loader-spin {
+	animation: loaderSpin 700ms ease-in-out infinite;
+}
+
+@keyframes loaderSpin {
+	from {transform: rotate(0deg);}
+	to {transform: rotate(359deg);}
+}
 </style>
 
 <template lang="pug">

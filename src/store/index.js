@@ -40,6 +40,7 @@ export default new Vuex.Store({
 			for (let user of users.docs) {
 				let data = user.data()
 				data.id = user.id
+				data.active = false
 				usersRes.push(data)
 			}
 

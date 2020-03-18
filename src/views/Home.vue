@@ -80,6 +80,8 @@
 					}
 
 					.fas {
+						width: 15px;
+						text-align: center;
 						margin-left: 10px;
 						color: #abaaac;
 					}
@@ -109,14 +111,7 @@
 
 		#list(:class="{loading: isLoading}")
 			p.loader
-				i.fas.fa-circle-notch.fa-spin
-			.item(@click="startGlobalChat")
-				img(class="profile-picture" src="https://firebasestorage.googleapis.com/v0/b/propaganda-967a8.appspot.com/o/images%2Fglobal.png?alt=media&token=150f3d9c-96c9-435d-9330-24e7e03f0807")
-				.text-wrap
-					.name Global chat
-				.align-right
-						.pill
-						i.fas.fa-thumbtack
+				i.fas.fa-circle-notch.loader-spin
 
 			.item(v-for="conversation in conversations" v-if="!conversation.hide" @click="startChat(conversation.user.id)")
 				img(:src="conversation.user.profilePicture" class="profile-picture")
@@ -125,6 +120,7 @@
 					.preview(:class="{active: conversation.notifs > 0}") {{ conversation.preview }}
 				.align-right
 					.pill(v-if="conversation.notifs > 0")
+					i.fas.fa-thumbtack(v-if="conversation.user.id === '*'")
 </template>
 
 <script>
@@ -147,17 +143,12 @@ export default {
 		goToPeople() {
 			this.$router.push('people')
 		},
-		startGlobalChat() {
-				this.$router.push({
-					name: 'Chat',
-					query: {
-						convId: '*',
-						otherId: '*'
-					}
-				})
-		},
 		startChat(userId) {
-			let convId = this.uid > userId ? this.uid + '' + userId : userId + '' + this.uid
+			let convId = null
+			if (userId === '*')
+				convId = '*'
+			else
+				convId = this.uid > userId ? this.uid + '' + userId : userId + '' + this.uid
 
 			this.$router.push({
 				name: 'Chat',
@@ -180,15 +171,12 @@ export default {
 			})
 		},
 		async getConversations() {
-			this.conversationsDb.where('ids', 'array-contains', this.uid).orderBy('lastUpdated', 'desc').onSnapshot(res => this.getMetadata(res))
+			this.conversationsDb.where('ids', 'array-contains-any', [this.uid, '*']).orderBy('lastUpdated', 'desc').onSnapshot(res => this.getMetadata(res))
 		},
 		async getMetadata(conversations) {
 			let conversationsRes = []
 
 			for (let conversation of conversations.docs) {
-				if (conversation.id === '*')
-					continue
-
 				let userId = conversation.data().ids.find(e => e !== this.uid)
 
 				let lastMessage =	await this.conversationsDb.doc(conversation.id).collection('messages').orderBy('timestamp', 'desc').limit(1).get()
@@ -197,17 +185,22 @@ export default {
 
 				notifs = notifs.data() ? notifs.data().notifications : []
 
-				conversationsRes.push({
+				let tmp = {
 					convId: conversation.id,
 					preview: lastMessage.docs[0].data().content,
 					notifs: notifs.filter(elem => elem === conversation.id).length,
 					user: {
-						name: userData.name,
-						profilePicture: userData.profilePicture,
-						id: userId
+						name: userData ? userData.name : 'Global chat',
+						profilePicture: userData ? userData.profilePicture : 'https://firebasestorage.googleapis.com/v0/b/propaganda-967a8.appspot.com/o/images%2Fglobal.png?alt=media&token=150f3d9c-96c9-435d-9330-24e7e03f0807',
+						id: userData ? userId : '*'
 					},
 					...conversation.data()
-				})
+				}
+
+				if (conversation.id === '*')
+					conversationsRes.unshift(tmp)
+				else
+					conversationsRes.push(tmp)
 			}
 
 			this.conversations = conversationsRes

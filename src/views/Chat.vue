@@ -200,15 +200,35 @@ export default {
 			this.convRef
 				.update({lastUpdated: firebase.firestore.FieldValue.serverTimestamp()})
 
-			firebase
-				.firestore()
-				.collection('notifications')
-				.doc(this.otherId)
-				.update({
-					notifications: firebase.firestore.FieldValue.arrayUnion(this.convId)
-				})
+			this.setNotification()
 
 			this.messageInput = ''
+		},
+		setNotification() {
+			let db = firebase.firestore()
+
+			if (this.otherUser) {
+				db
+					.collection('notifications')
+					.doc(this.otherId)
+					.update({
+						notifications: firebase.firestore.FieldValue.arrayUnion(this.convId)
+					})
+			}
+			else {
+				let batch = db.batch()
+
+				for (let user of this.$store.state.users) {
+					if (user.id === this.ownId)
+						continue
+
+					batch.update(db.collection('notifications').doc(user.id), {
+						notifications: firebase.firestore.FieldValue.arrayUnion('*')
+					})
+				}
+
+				batch.commit()
+			}
 		},
 		getPicture(id) {
 			return this.$store.state.users.find(user => user.id === id).profilePicture
@@ -239,14 +259,14 @@ export default {
 				snap.forEach(doc => {
 					this.messages.push(doc.data())
 				})
-			})
 
-		firebase
-			.firestore()
-			.collection('notifications')
-			.doc(this.ownId)
-			.update({
-				notifications: firebase.firestore.FieldValue.arrayRemove(this.convId)
+				firebase
+					.firestore()
+					.collection('notifications')
+					.doc(this.ownId)
+					.update({
+						notifications: firebase.firestore.FieldValue.arrayRemove(this.convId)
+					})
 			})
 	}
 }
