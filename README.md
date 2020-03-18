@@ -10,9 +10,12 @@ Features
 - [x] Vote page
 - [x] Notifications on home page
 - [x] Notifications for global chat
-- [ ] Push notifications
 - [x] Align vertically text next to profile pictures in user lists (ex: Home.vue)
 - [ ] Loader in Picture.vue
+- [ ] Push notifications
+
+Improvements
+- [ ] Better dark mode
 
 Optimizations
 - [x] Loader on buttons
