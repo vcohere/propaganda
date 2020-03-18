@@ -11,8 +11,10 @@
 		#search {
 			width: 100%;
 			padding: 15px 20px;
-			border: 1px solid rgba(0,0,0,0.1);
+			background-color: #252525;
+			border: none;
 			border-radius: 50px;
+			color: white;
 
 			&:active, &:focus {
 				outline: none;

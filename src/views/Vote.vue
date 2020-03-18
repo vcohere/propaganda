@@ -53,7 +53,7 @@
 					}
 
 					&.back {
-						background-color: #1B9CFC;
+						background-color: #00FFFF;
 						transform: rotateY(180deg);
 					}
 				}
@@ -71,7 +71,7 @@
 			width: calc(100% - 40px);
 			padding: 15px;
 			font-size: 1.1rem;
-			background-color: #1B9CFC;
+			background-color: #00FFFF;
 			color: #fff;
 			border-radius: 5px;
 			border: none;
@@ -116,14 +116,14 @@
 					border-radius: 5px;
 
 					&.confirm {
-						background-color: #1B9CFC;
+						background-color: #00FFFF;
 						color: white;
 					}
 
 					&.cancel {
 						background-color: white;
-						box-shadow: inset 0px 0px 0px 2px #1B9CFC;
-						color: #1B9CFC;
+						box-shadow: inset 0px 0px 0px 2px #00FFFF;
+						color: #00FFFF;
 						margin-right: 20px;
 					}
 				}

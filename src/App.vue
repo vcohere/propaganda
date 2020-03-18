@@ -9,6 +9,11 @@ button:focus, button:active {
 	outline: none;
 }
 
+body {
+	background-color: #121212;
+	color: white;
+}
+
 #app {
 	font-size: 16px;
   font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -22,17 +27,17 @@ button:focus, button:active {
 	left: 0;
 	width: 100%;
 	text-align: center;
-	background-color: #ffffff;
-	border-top: 1px solid rgba(0,0,0,0.1);
+	background-color: #272727;
 
 	.nav {
 		display: inline-block;
 		width: 24.5%;
 		font-size: 35px;
 		padding: 10px 0;
+		color: #838383;
 
 		&.active {
-			color: #1B9CFC;
+			color: #00FFFF;
 		}
 
 		* {

@@ -20,8 +20,8 @@
 			width: 100%;
 			padding: 15px;
 			font-size: 1.1rem;
-			background-color: #1B9CFC;
-			color: #fff;
+			background-color: #66ffff;
+			color: black;
 			border-radius: 5px;
 			border: none;
 
@@ -47,7 +47,7 @@
 		.error {
 			margin-bottom: 20px;
 			font-weight: bold;
-			color: #eb3b5a;
+			color: #FF7BFE;
 		}
 	}
 </style>

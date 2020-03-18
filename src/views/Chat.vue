@@ -7,7 +7,7 @@
 			width: 100%;
 			height: 90px;
 			padding: 20px;
-			background-color: #fff;
+			background-color: #2c2c2c;
 
 			* {
 				vertical-align: middle;
@@ -16,7 +16,7 @@
 			.previous {
 				display: inline-block;
 				font-size: 30px;
-				color: black;
+				color: white;
 				margin-right: 20px;
 			}
 
@@ -60,7 +60,7 @@
 
 				.text {
 					padding: 10px 15px;
-					background-color: #e6f4ff;
+					background-color: #232323;
 					border-radius: 20px;
 					border-bottom-left-radius: 3px;
 					border-top-left-radius: 3px;
@@ -88,8 +88,8 @@
 						border-radius: 20px;
 						border-bottom-right-radius: 3px;
 						border-top-right-radius: 3px;
-						background-color: #1B9CFC;
-						color: white;
+						background-color: #00FFFF;
+						color: black;
 						margin-bottom: 3px;
 
 						&:first-child {
@@ -110,8 +110,7 @@
 			left: 0;
 			width: 100%;
 			padding: 10px 20px;
-			border-top: 1px solid rgba(0,0,0,0.1);
-			background-color: #fff;
+			background-color: #272727;
 
 			.input-wrap {
 				position: relative;
@@ -122,13 +121,15 @@
 				top: 10px;
 				right: 17px;
 				font-size: 1.4rem;
-				color: #1B9CFC;
+				color: #00FFFF;
 			}
 
 			.message-input {
 				width: 100%;
 				padding: 10px 15px;
-				border: 1px solid rgba(0,0,0,0.1);
+				border: none;
+				background-color: #383838;
+				color: white;
 				border-radius: 50px;
 				font-size: 1.2rem;
 

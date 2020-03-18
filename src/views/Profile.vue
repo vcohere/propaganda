@@ -9,19 +9,20 @@
 			top: 0;
 			left: 0;
 			width: 100%;
-			height: 90px;
+			height: 70px;
 			padding: 20px;
-			background-color: #fff;
+			background-color: #2c2c2c;
 			text-align: left;
 
 			* {
+				line-height: 30px;
 				vertical-align: middle;
 			}
 
 			.previous {
 				display: inline-block;
 				font-size: 30px;
-				color: black;
+				color: white;
 				margin-right: 20px;
 			}
 		}
@@ -49,8 +50,8 @@
 				width: calc(100% - 40px);
 				padding: 15px;
 				font-size: 1.1rem;
-				background-color: #1B9CFC;
-				color: #fff;
+				background-color: #66ffff;
+				color: black;
 				border-radius: 5px;
 				border: none;
 

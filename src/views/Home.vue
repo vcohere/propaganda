@@ -11,8 +11,10 @@
 		#search {
 			width: 100%;
 			padding: 15px 20px;
-			border: 1px solid rgba(0,0,0,0.1);
+			background-color: #252525;
+			border: none;
 			border-radius: 50px;
+			color: white;
 
 			&:active, &:focus {
 				outline: none;
@@ -26,7 +28,7 @@
 				display: none;
 				text-align: center;
 				font-size: 30px;
-				color: #1B9CFC;
+				color: #00FFFF;
 			}
 
 			.item {
@@ -76,14 +78,14 @@
 						width: 15px;
 						height: 15px;
 						border-radius: 50%;
-						background-color: #1B9CFC;
+						background-color: #00FFFF;
 					}
 
 					.fas {
 						width: 15px;
 						text-align: center;
 						margin-left: 10px;
-						color: #abaaac;
+						color: #838383;
 					}
 				}
 
