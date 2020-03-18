@@ -49,17 +49,44 @@
 					border-radius: 50%;
 				}
 
-				.name, .preview {
-					padding-left: 75px;
+				.text-wrap {
+					position: absolute;
+					left: 75px;
+					top: 50%;
+					transform: translateY(-50%);
+
+					.name {
+						font-weight: bold;
+						font-size: 1.2rem;
+						margin-bottom: 2px;
+					}
+				}
+
+				.align-right {
+					position: absolute;
+					right: 0;
+					top: 50%;
+					transform: translateY(-50%);
+
+					.pill, .fas {
+						display: inline-block;
+					}
+
+					.pill {
+						width: 15px;
+						height: 15px;
+						border-radius: 50%;
+						background-color: #1B9CFC;
+					}
+
+					.fas {
+						margin-left: 10px;
+						color: #abaaac;
+					}
 				}
 
 				.preview.active {
 					font-weight: bold;
-				}
-
-				.name {
-					font-weight: bold;
-					font-size: 1.2rem;
 				}
 			}
 
@@ -85,11 +112,19 @@
 				i.fas.fa-circle-notch.fa-spin
 			.item(@click="startGlobalChat")
 				img(class="profile-picture" src="https://firebasestorage.googleapis.com/v0/b/propaganda-967a8.appspot.com/o/images%2Fglobal.png?alt=media&token=150f3d9c-96c9-435d-9330-24e7e03f0807")
-				.name Global chat
+				.text-wrap
+					.name Global chat
+				.align-right
+						.pill
+						i.fas.fa-thumbtack
+
 			.item(v-for="conversation in conversations" v-if="!conversation.hide" @click="startChat(conversation.user.id)")
 				img(:src="conversation.user.profilePicture" class="profile-picture")
-				.name {{ conversation.user.name }}
-				.preview(:class="{active: conversation.notifs > 0}") {{ conversation.preview }}
+				.text-wrap
+					.name {{ conversation.user.name }}
+					.preview(:class="{active: conversation.notifs > 0}") {{ conversation.preview }}
+				.align-right
+					.pill(v-if="conversation.notifs > 0")
 </template>
 
 <script>
