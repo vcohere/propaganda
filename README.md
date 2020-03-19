@@ -13,6 +13,7 @@ Features
 - [x] Align vertically text next to profile pictures in user lists (ex: Home.vue)
 - [ ] Loader in Picture.vue
 - [ ] Push notifications
+- [ ] Signup security (See below)
 
 Improvements
 - [ ] Better dark mode
@@ -25,6 +26,14 @@ Optimizations
 - [x] Fix profile pictures in global chat
 - [x] Better and faster loader animation in App.vue
 - [x] Redo pages with users data stored in store cache
+
+### Signup Security
+* Create a security collection in Firebase.
+* Generate a doc for each user
+* Have them use the doc ID when signing up
+* Delete the doc when used so they're unique
+* ???
+* Profit!
 
 ## Project setup
 ```
