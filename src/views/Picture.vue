@@ -20,10 +20,24 @@
 			width: 100%;
 			padding: 15px;
 			font-size: 1.1rem;
-			background-color: #1B9CFC;
-			color: #fff;
+			background-color: #66ffff;
+			color: black;
 			border-radius: 5px;
 			border: none;
+
+			.loader {
+				display: none;
+			}
+
+			&.loading {
+				span {
+					display: none;
+				}
+
+				.loader {
+					display: block;
+				}
+			}
 		}
 
 		h3, p {
@@ -33,7 +47,7 @@
 		.error {
 			margin-bottom: 20px;
 			font-weight: bold;
-			color: #eb3b5a;
+			color: #FF7BFE;
 		}
 	}
 </style>
@@ -44,7 +58,9 @@
 		p Be aware that you will not be able to change it.
 		p.error(v-if="errorMessage") {{ errorMessage }}
 		input(type="file" placeholder="Profile picture" ref="picture")
-		button(@click="upload") Continue
+		button(@click="upload" :class="{loading: buttonLoading}")
+			span Continue
+			i.fas.fa-circle-notch.loader.loader-spin
 </template>
 
 <script>
@@ -57,10 +73,13 @@ export default {
 			uid: firebase.auth().currentUser.uid,
 			picture: [],
 			errorMessage: '',
+			buttonLoading: false
 		}
 	},
 	methods: {
 		upload() {
+			this.buttonLoading = true
+
 			const file = this.$refs.picture.files[0]
 
 			if (!file)
@@ -75,6 +94,7 @@ export default {
 							.doc(this.uid)
 							.update({profilePicture: url})
 
+						this.buttonLoading = false
 						this.$router.replace('home')
 					})
 				})
