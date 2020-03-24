@@ -21,6 +21,7 @@ Features
 Improvements
 - [ ] Better dark mode
 - [ ] Disable click on buttons when loading
+- [ ] manifest.json
 
 Optimizations
 - [x] Loader on buttons

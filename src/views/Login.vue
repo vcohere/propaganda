@@ -44,6 +44,11 @@
 			margin-bottom: 20px;
 		}
 
+		.create-account {
+			color: white;
+			display: block;
+		}
+
 		.error {
 			margin-bottom: 20px;
 			font-weight: bold;
