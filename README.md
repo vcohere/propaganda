@@ -11,8 +11,9 @@ Features
 - [x] Notifications on home page
 - [x] Notifications for global chat
 - [x] Align vertically text next to profile pictures in user lists (ex: Home.vue)
-- [ ] Loader in Picture.vue
-- [ ] Push notifications
+- [x] Loader in Picture.vue
+- [x] Push notifications
+- [ ] Cloud function sending a notification for every new message insertedss
 - [ ] Signup security (See below)
 
 Improvements

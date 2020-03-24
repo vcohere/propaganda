@@ -54,8 +54,9 @@
 
 <template lang="pug">
 	#notifications
-		h3 Accept notifications on your phone
-		p One last step before entering the game.
+		h3 Notifications
+		p We need to be able to send notifications on your phone whenever you get a message.
+		p Press the button and accept all notifications to proceed.
 		p.error(v-if="errorMessage") {{ errorMessage }}
 		button(@click="askPermission" :class="{loading: buttonLoading}")
 			span Accept notifications
@@ -92,7 +93,7 @@ export default {
 				this.buttonLoading = false
 			}).catch((err) => {
 				this.errorMessage = err.message
-				
+
 				this.buttonLoading = false
 			})
 		}
