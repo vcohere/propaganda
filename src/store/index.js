@@ -8,7 +8,8 @@ export default new Vuex.Store({
   state: {
 		dataLoading: true,
 		self: null,
-		users: []
+		users: [],
+		messaging: null
   },
   mutations: {
 		stopLoading(state) {

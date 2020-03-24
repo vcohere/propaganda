@@ -43,11 +43,16 @@
 				}
 			}
 
-			button {
+			.button-wrap {
 				position: fixed;
 				bottom: 80px;
-				left: 20px;
+				left: 0px;
+				width: 100%;
+			}
+
+			button {
 				width: calc(100% - 40px);
+				margin-top: 20px;
 				padding: 15px;
 				font-size: 1.1rem;
 				background-color: #66ffff;
@@ -74,8 +79,9 @@
 			h1 {{ userInfos ? userInfos.name : '' }}
 			p {{ userInfos ? userInfos.bio : '' }}
 
-			button(@click="startChat" v-if="!isMine") Start chat
-			button(@click="logout" v-if="isMine").red Log out
+			.button-wrap
+				button(@click="startChat" v-if="!isMine") Start chat
+				button(@click="logout" v-if="isMine").red Log out
 </template>
 
 <script>

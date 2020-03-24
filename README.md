@@ -17,6 +17,7 @@ Features
 
 Improvements
 - [ ] Better dark mode
+- [ ] Disable click on buttons when loading
 
 Optimizations
 - [x] Loader on buttons

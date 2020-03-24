@@ -1,5 +1,5 @@
 <style lang="scss">
-	#picture {
+	#notifications {
 		padding: 20px;
 		text-align: center;
 
@@ -53,13 +53,12 @@
 </style>
 
 <template lang="pug">
-	#picture
-		h3 Upload your profile picture
-		p Be aware that you will not be able to change it.
+	#notifications
+		h3 Accept notifications on your phone
+		p One last step before entering the game.
 		p.error(v-if="errorMessage") {{ errorMessage }}
-		input(type="file" placeholder="Profile picture" ref="picture")
-		button(@click="upload" :class="{loading: buttonLoading}")
-			span Continue
+		button(@click="askPermission" :class="{loading: buttonLoading}")
+			span Accept notifications
 			i.fas.fa-circle-notch.loader.loader-spin
 </template>
 
@@ -67,40 +66,35 @@
 import firebase from 'firebase'
 
 export default {
-	name: 'picture',
+	name: 'notifications',
 	data() {
 		return {
 			uid: firebase.auth().currentUser.uid,
-			picture: [],
 			errorMessage: '',
 			buttonLoading: false
 		}
 	},
 	methods: {
-		upload() {
+		askPermission() {
 			this.buttonLoading = true
 
-			const file = this.$refs.picture.files[0]
+			let messaging = this.$store.state.messaging
 
-			if (!file)
-				this.errorMessage = 'No image selected.'
+			messaging.requestPermission().then(() => {
+				return messaging.getToken()
+			}).then((token) => {
+				firebase
+					.firestore()
+					.collection('users')
+					.doc(this.uid)
+					.update({notificationToken: token})
 
-			firebase.storage().ref('images/' + file.name).put(file)
-				.then(res => {
-					res.ref.getDownloadURL().then(url => {
-						firebase
-							.firestore()
-							.collection('users')
-							.doc(this.uid)
-							.update({profilePicture: url})
-
-						this.buttonLoading = false
-						this.$router.replace('home')
-					})
-				})
-				.catch(err => {
-					this.errorMessage = err.message
-				})
+				this.buttonLoading = false
+			}).catch((err) => {
+				this.errorMessage = err.message
+				
+				this.buttonLoading = false
+			})
 		}
 	}
 }

@@ -6,6 +6,7 @@ import Chat from '../views/Chat.vue'
 import Login from '../views/Login.vue'
 import SignUp from '../views/SignUp.vue'
 import Picture from '../views/Picture.vue'
+import Notifications from '../views/Notifications.vue'
 import People from '../views/People.vue'
 import Profile from '../views/Profile.vue'
 import Vote from '../views/Vote.vue'
@@ -43,6 +44,15 @@ const router = new Router ({
 			path: '/picture',
 			name: 'Picture',
 			component: Picture,
+			meta: {
+				hideMenu: true,
+				requiresAuth: true
+			}
+		},
+		{
+			path: '/notifications',
+			name: 'Notifications',
+			component: Notifications,
 			meta: {
 				hideMenu: true,
 				requiresAuth: true

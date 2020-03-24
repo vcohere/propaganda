@@ -21,12 +21,36 @@ const config = {
 
 firebase.initializeApp(config)
 
+const messaging = firebase.messaging()
+
+messaging.usePublicVapidKey('BCM5xS0d9tPn1IMHWTQ1OxRbUXVLIl2YUej6uY5I6HmMdIbwxD9-Gv8lGmQOYKPxe9zO8e_5UTvveYvGqh7FiWM')
+
+messaging.onTokenRefresh(() => {
+	messaging.getToken().then((token) => {
+		firebase
+			.firestore()
+			.collection('users')
+			.doc(firebase.auth().currentUser.uid)
+			.update({notificationToken: token})
+	})
+})
+
+navigator.serviceWorker.register('/firebase-messaging-sw.js')
+.then((registration) => {
+	messaging.useServiceWorker(registration)
+}).catch(err => {
+	console.log(err)
+})
+
 firebase.auth().onAuthStateChanged(() => {
 	if (!app) {
 		app = new Vue({
 			router,
 			store,
-			render: h => h(App)
+			render: h => h(App),
+			created() {
+				this.$store.state.messaging = messaging
+			}
 		}).$mount('#app')
 	}
 })
