@@ -40,7 +40,7 @@
 			}
 		}
 
-		h3, .create-account {
+		h1, .create-account {
 			margin-bottom: 20px;
 		}
 
@@ -54,7 +54,7 @@
 
 <template lang="pug">
 	#login
-		h3 Login to Propaganda
+		h1 Login to Propaganda
 		p.error(v-if="errorMessage") {{ errorMessage }}
 		input(type="text" placeholder="mail" v-model="email")
 		input(type="password" placeholder="password" v-model="password")

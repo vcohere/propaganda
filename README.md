@@ -15,6 +15,8 @@ Features
 - [x] Push notifications
 - [ ] Cloud function sending a notification for every new message insertedss
 - [ ] Signup security (See below)
+- [ ] Send messages and confirm form on "Go" on mobile keyboard
+- [ ] Add Notifications.vue page to sign up process
 
 Improvements
 - [ ] Better dark mode

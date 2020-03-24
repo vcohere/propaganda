@@ -40,7 +40,7 @@
 			}
 		}
 
-		h3, p {
+		h1, p {
 			margin-bottom: 20px;
 		}
 

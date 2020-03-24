@@ -40,7 +40,7 @@
 			}
 		}
 
-		h3 {
+		h1 {
 			margin-bottom: 20px;
 		}
 
@@ -54,7 +54,7 @@
 
 <template lang="pug">
 	#signup
-		h3 Create an account
+		h1 Create an account
 		p.error(v-if="errorMessage") {{ errorMessage }}
 		input(type="text" placeholder="First name" v-model="name")
 		input(type="text" placeholder="Bio" v-model="bio")

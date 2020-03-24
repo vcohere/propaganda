@@ -40,7 +40,7 @@
 			}
 		}
 
-		h3, p {
+		h1, p {
 			margin-bottom: 20px;
 		}
 
@@ -54,7 +54,7 @@
 
 <template lang="pug">
 	#picture
-		h3 Upload your profile picture
+		h1 Upload your profile picture
 		p Be aware that you will not be able to change it.
 		p.error(v-if="errorMessage") {{ errorMessage }}
 		input(type="file" placeholder="Profile picture" ref="picture")
