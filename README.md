@@ -14,10 +14,11 @@ Features
 - [x] Loader in Picture.vue
 - [x] Push notifications
 - [x] Add Notifications.vue page to sign up process
-- [ ] Cloud function sending a notification for every new message insertedss
+- [x] Cloud function sending a notification for every new message inserted
 - [ ] Signup security (See below)
 - [ ] Send messages and confirm form on "Go" on mobile keyboard
 - [ ] Mail verification on sign up
+- [ ] Auto scroll to bottom in chat
 
 Improvements
 - [ ] Better dark mode
@@ -35,6 +36,7 @@ Optimizations
 
 Testing
 - [ ] Sign up process
+- [ ] Notification in one-on-one and global
 
 ### Signup Security
 * Create a security collection in Firebase.
@@ -59,10 +61,16 @@ npm run serve
 npm run build
 ```
 
-### Lints and fixes files
+### Deploy project
 ```
-npm run lint
+npm run build
+firebase deploy --only hosting
 ```
 
-### Customize configuration
+### Deploy cloud functions
+```
+firebase deploy --only functions
+```
+
+### Vue-Cli Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
