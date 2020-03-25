@@ -95,7 +95,7 @@ export default {
 							.update({profilePicture: url})
 
 						this.buttonLoading = false
-						this.$router.replace('home')
+						this.$router.replace('notifications')
 					})
 				})
 				.catch(err => {

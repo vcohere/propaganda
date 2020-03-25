@@ -13,10 +13,11 @@ Features
 - [x] Align vertically text next to profile pictures in user lists (ex: Home.vue)
 - [x] Loader in Picture.vue
 - [x] Push notifications
+- [x] Add Notifications.vue page to sign up process
 - [ ] Cloud function sending a notification for every new message insertedss
 - [ ] Signup security (See below)
 - [ ] Send messages and confirm form on "Go" on mobile keyboard
-- [ ] Add Notifications.vue page to sign up process
+- [ ] Mail verification on sign up
 
 Improvements
 - [ ] Better dark mode
@@ -31,6 +32,9 @@ Optimizations
 - [x] Fix profile pictures in global chat
 - [x] Better and faster loader animation in App.vue
 - [x] Redo pages with users data stored in store cache
+
+Testing
+- [ ] Sign up process
 
 ### Signup Security
 * Create a security collection in Firebase.

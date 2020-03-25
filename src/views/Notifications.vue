@@ -91,6 +91,7 @@ export default {
 					.update({notificationToken: token})
 
 				this.buttonLoading = false
+				this.$router.replace('home')
 			}).catch((err) => {
 				this.errorMessage = err.message
 
