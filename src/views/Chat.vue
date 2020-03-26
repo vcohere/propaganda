@@ -150,7 +150,7 @@
 				img(:src="otherUser ? otherUser.profilePicture : 'https://firebasestorage.googleapis.com/v0/b/propaganda-967a8.appspot.com/o/images%2Fglobal.png?alt=media&token=150f3d9c-96c9-435d-9330-24e7e03f0807'" class="profile-picture")
 				.name {{ otherUser ? otherUser.name : 'Global chat' }}
 
-		#messages
+		#messages(ref="messages")
 			.message(v-for="message in messages" :class="{mine: message.from === ownId}")
 				img(v-if="message.from !== ownId" :src="getPicture(message.from)" class="profile-picture")
 				.texts
@@ -241,9 +241,15 @@ export default {
 					id: this.otherId
 				}
 			})
+		},
+		scrollDown() {
+			this.$nextTick(() => {
+				document.body.scrollIntoView(false)
+			})
 		}
 	},
 	created() {
+		// TODO: Not working.
 		this.convRef
 			.get()
 			.then(res => {
@@ -260,6 +266,8 @@ export default {
 				snap.forEach(doc => {
 					this.messages.push(doc.data())
 				})
+
+				this.scrollDown()
 
 				firebase
 					.firestore()

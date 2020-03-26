@@ -62,7 +62,7 @@ body {
 </style>
 
 <template lang="pug">
-	#app(v-if="!isLoading")
+	#app(v-if="!isLoading" ref="body")
 		router-view
 		#footer(v-if="!$route.meta.hideMenu")
 			.nav(@click="goToHome" :class="{active: $route.name === 'Home'}")
