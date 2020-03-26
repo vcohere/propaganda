@@ -49,11 +49,16 @@
 			font-weight: bold;
 			color: #FF7BFE;
 		}
+
+		img {
+			width: 100%;
+		}
 	}
 </style>
 
 <template lang="pug">
 	#signup
+		img(src="../assets/banner.png")
 		h1 Create an account
 		p.error(v-if="errorMessage") {{ errorMessage }}
 		input(type="text" placeholder="First name" v-model="name")

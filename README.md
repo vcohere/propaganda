@@ -16,14 +16,14 @@ Features
 - [x] Add Notifications.vue page to sign up process
 - [x] Cloud function sending a notification for every new message inserted
 - [x] Auto scroll to bottom in chat
-- [ ] Send messages and confirm form on "Go" on mobile keyboard
-- [ ] Mail verification on sign up
+- [x] Send messages and confirm form on "Go" on mobile keyboard
+- [x] Mail verification on sign up (Decided against it.)
 - [ ] Signup security (See below)
 
 Improvements
 - [ ] Better dark mode
 - [ ] Disable click on buttons when loading
-- [ ] manifest.json
+- [x] manifest.json
 - [ ] Import only what's necessary
 - [ ] Send notifications from device, not with cloud function (too slow)
 - [ ] No auto-scroll to the bottom when not already at the bottom
