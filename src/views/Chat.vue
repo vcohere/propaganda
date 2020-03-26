@@ -160,7 +160,7 @@
 		#input
 			.input-wrap
 				i.fas.fa-paper-plane.send(@click="sendMessage")
-				input(type="text" class="message-input" placeholder="Aa" v-model="messageInput")
+				input(type="text" class="message-input" placeholder="Aa" v-model="messageInput" @keyup.enter="sendMessage")
 </template>
 
 <script>
